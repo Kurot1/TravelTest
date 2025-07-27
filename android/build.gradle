@@ -1,0 +1,37 @@
+buildscript {
+    ext.kotlin_version = '1.9.0'
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        // ✅ Kotlin Gradle 플러그인
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // ✅ Android Gradle Plugin 추가 (중요!)
+        classpath "com.android.tools.build:gradle:8.2.1"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
